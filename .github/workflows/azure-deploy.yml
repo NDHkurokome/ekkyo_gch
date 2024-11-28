@@ -23,4 +23,4 @@ jobs:
     # Azure Web Appへのデプロイ
     - name: Deploy to Azure Web App
       run: |
-        az webapp up --name ekkyowebapp-github-actions --resource-group ekkyoResourceGroup --location japaneast --runtime "NODE:16-lts"
+        az webapp up --name ekkyowebapp-github-actions --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
