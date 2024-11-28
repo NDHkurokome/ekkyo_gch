@@ -23,9 +23,9 @@ jobs:
     # Webアプリを作成
     - name: Create Web App
       run: |
-        az webapp create --name ekkyowebapp-github-actions --resource-group ekkyoResourceGroup --plan ekkyoAppServicePlan --runtime "NODE:16-lts"
+        az webapp create --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --plan ekkyowebAppServicePlan --runtime "NODE:16-lts" --os-type Linux
 
     # Webアプリへのデプロイ
     - name: Deploy to Azure Web App
       run: |
-        az webapp up --name ekkyowebapp-github-actions --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
+        az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
