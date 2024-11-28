@@ -1,0 +1,8 @@
+{
+  "name": "My Codespace",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "gh-cli": "latest"
+  },
+  "postCreateCommand": "echo 'Codespace is ready!'"
+}
