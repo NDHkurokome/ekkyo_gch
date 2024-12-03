@@ -20,12 +20,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # Webアプリを作成
-    - name: Create Web App
-      run: |
-        az webapp create --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --plan ekkyowebAppServicePlanLinux --runtime "NODE:16-lts"
-
-    # Webアプリへのデプロイ
+    # Webアプリのデプロイ
     - name: Deploy to Azure Web App
       run: |
-        az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
+        az webapp deployment source config --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --repo-url https://github.com/${{ github.repository }} --branch main --manual-integration
