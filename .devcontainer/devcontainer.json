@@ -2,7 +2,7 @@
   "name": "My Codespace",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
-    "gh-cli": "latest"
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-  "postCreateCommand": "echo 'Codespace is ready!'"
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y python3 python3-pip && echo 'Codespace is ready!'"
 }
