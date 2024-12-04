@@ -33,6 +33,11 @@ jobs:
         cd react-ekkyo-app
         ls -la build
 
+    - name: Change permissions for build directory
+      run: |
+        cd react-ekkyo-app
+        chmod -R 777 build
+
     - name: Login to Azure
       uses: azure/login@v1
       with:
