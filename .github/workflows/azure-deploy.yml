@@ -14,16 +14,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # Node.jsのセットアップ
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    # 依存関係のインストール
+    - name: Install dependencies
+      run: npm install
+
     # Azureへのログイン
     - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    # Webアプリを作成
-    - name: Create Web App
-      run: |
-        az webapp create --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --plan ekkyowebAppServicePlanLinux --runtime "NODE:16-lts"
 
     # Webアプリへのデプロイ
     - name: Deploy to Azure Web App
