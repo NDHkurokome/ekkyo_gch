@@ -1,9 +1,9 @@
-name: Build and Deploy Node.js app to Azure Web App
+name: Build and Deploy React app to Azure Web App
 
 on:
   push:
     branches:
-      - main
+      - main  # デプロイをトリガーするブランチを指定
 
 jobs:
   build-and-deploy:
@@ -19,10 +19,14 @@ jobs:
         node-version: '16'
 
     - name: Install dependencies
-      run: npm install
+      run: |
+        cd react-ekkyo-app
+        npm install
 
     - name: Build the app
-      run: npm run build
+      run: |
+        cd react-ekkyo-app
+        npm run build
 
     - name: Login to Azure
       uses: azure/login@v1
@@ -31,4 +35,5 @@ jobs:
 
     - name: Deploy to Azure Web App
       run: |
-        az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
+        cd react-ekkyo-app
+        az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts" --src-path build
