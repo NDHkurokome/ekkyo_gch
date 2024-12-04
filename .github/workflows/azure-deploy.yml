@@ -30,8 +30,8 @@ jobs:
 
     - name: Zip the build directory
       run: |
-        cd react-ekkyo-app
-        zip -r build.zip build
+        cd react-ekkyo-app/build
+        zip -r ../build.zip .
 
     - name: Login to Azure
       uses: azure/login@v1
