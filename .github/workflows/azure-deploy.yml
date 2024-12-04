@@ -35,4 +35,5 @@ jobs:
 
     - name: Deploy to Azure Web App
       run: |
-        az webapp deploy --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --src-path react-ekkyo-app/build --type static
+        cd react-ekkyo-app
+        az webapp deploy --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --src-path ./build --type static
