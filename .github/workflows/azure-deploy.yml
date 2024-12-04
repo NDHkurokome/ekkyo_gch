@@ -28,16 +28,6 @@ jobs:
         cd react-ekkyo-app
         npm run build
 
-    - name: List build directory
-      run: |
-        cd react-ekkyo-app
-        ls -la build
-
-    - name: Change permissions for build directory
-      run: |
-        cd react-ekkyo-app
-        chmod -R 777 build
-
     - name: Login to Azure
       uses: azure/login@v1
       with:
@@ -45,4 +35,4 @@ jobs:
 
     - name: Deploy to Azure Web App
       run: |
-        az webapp deploy --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --src-path react-ekkyo-app --type static
+        az webapp deploy --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --src-path . --type static
