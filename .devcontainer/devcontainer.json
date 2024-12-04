@@ -11,9 +11,7 @@
       "vscode": {
           "extensions": [
               "GitHub.copilot",
-              "mhutchie.git-graph",
-              "yzhang.markdown-all-in-one",
-              "jebbs.plantuml"
+              "mhutchie.git-graph"
           ]
       }
   },
