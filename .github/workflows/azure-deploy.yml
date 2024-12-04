@@ -42,6 +42,3 @@ jobs:
     - name: Deploy to Azure Web App
       run: |
         az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
-      run: |
-        cd react-ekkyo-app
-        az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
