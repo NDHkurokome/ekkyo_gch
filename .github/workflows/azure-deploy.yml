@@ -33,12 +33,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # Webアプリを作成
-    - name: Create Web App
-      run: |
-        az webapp create --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --plan ekkyowebAppServicePlanLinux --runtime "NODE:16-lts"
-
-    # Webアプリへのデプロイ
     - name: Deploy to Azure Web App
       run: |
-        az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
+        az webapp deploy --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --src-path react-ekkyo-app/build --type static
