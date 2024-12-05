@@ -3,11 +3,22 @@ name: Build and Deploy HTML to Azure Web App
 on:
   push:
     branches:
-      - feat/ui-merge  # デプロイをトリガーするブランチを指定
+      - feat/kurokomes
+      - feat/ono
+      - feat/sakaguchi
+      - develop
+      - main  # 本番環境用のブランチ
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      APP_NAME: ekkyo-gch-${{ github.event.ref_name }}
+      RESOURCE_GROUP: ekkyoResourceGroup
+      LOCATION: westus
+      NODE_VERSION: '16'
+      APP_SERVICE_PLAN: ekkyowebAppServicePlanLinux  # 固定のApp Serviceプラン
 
     steps:
     - name: Checkout code
@@ -17,6 +28,10 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '16'
+
+    - name: Sanitize branch name for app name
+      id: sanitize
+      run: echo "::set-output name=sanitized_name::$(echo ${{ github.ref_name }} | tr '/' '-' | tr '_' '-')"
 
     - name: Install dependencies
       run: |
@@ -38,10 +53,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Create Azure Web App if it does not exist
+      run: |
+        if ! az webapp show --name ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }} --resource-group ${{ env.RESOURCE_GROUP }}; then
+          az webapp create --resource-group ${{ env.RESOURCE_GROUP }} --plan ${{ env.APP_SERVICE_PLAN }} --name ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }} --runtime "NODE|16-lts"
+        fi
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ekkyowebapp-github-actions-linux
-        resource-group: ekkyoResourceGroup
+        app-name: ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
         package: react-ekkyo-app/build.zip
         startup-command: 'pm2 serve /home/site/wwwroot --no-daemon'
