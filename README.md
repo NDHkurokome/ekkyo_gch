@@ -4,7 +4,7 @@
 ## 準備
 
 * Chrome拡張機能Pegmatiteのインストール
-    * 一部のドキュメントについてはPlantUMLを利用しているため、Githubでプレビューする際にはChromeブラウザのPegmatite(https://chromewebstore.google.com/detail/pegmatite/jegkfbnfbfnohncpcfcimepibmhlkldo?hl=ja-jp)をご利用ください。
+    * 一部のドキュメントについてはPlantUMLを利用しているため、Githubでプレビューする際にはChromeブラウザの[Pegmatite](https://chromewebstore.google.com/detail/pegmatite/jegkfbnfbfnohncpcfcimepibmhlkldo?hl=ja-jp)をご利用ください。
 
 ## 説明
 
