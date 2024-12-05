@@ -8,6 +8,7 @@ on:
       - feat/ono
       - feat/fukaos 
       - main  # 本番環境用のブランチ
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -47,10 +48,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Create Azure Web App if it does not exist
+      run: |
+        if ! az webapp show --name ${{ env.APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }}; then
+          az webapp create --resource-group ${{ env.RESOURCE_GROUP }} --plan myAppServicePlan --name ${{ env.APP_NAME }} --runtime "NODE|16-lts"
+        fi
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.APP_NAME }}
-        resource-group: ${{ env.RESOURCE_GROUP }}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
         package: react-ekkyo-app/build.zip
         startup-command: 'pm2 serve /home/site/wwwroot --no-daemon'
