@@ -1,9 +1,9 @@
-name: Build and Deploy React app to Azure Web App
+name: Build and Deploy HTML to Azure Web App
 
 on:
   push:
     branches:
-      - main  # デプロイをトリガーするブランチを指定
+      - feat/fukaor  # デプロイをトリガーするブランチを指定
 
 jobs:
   build-and-deploy:
@@ -13,20 +13,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-
-    - name: Install dependencies
+    - name: Create Hello World HTML
       run: |
-        cd react-ekkyo-app
-        npm install
+        echo "<!DOCTYPE html><html><head><title>Hello</title></head><body><h1>Hello, world</h1></body></html>" > index.html
 
-    - name: Build the app
+    - name: Zip the HTML file
       run: |
-        cd react-ekkyo-app
-        npm run build
+        zip build.zip index.html
 
     - name: Login to Azure
       uses: azure/login@v1
@@ -34,6 +27,9 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Deploy to Azure Web App
-      run: |
-        cd react-ekkyo-app
-        az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts" --src-path build
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ekkyowebapp-github-actions-linux
+        resource-group: ekkyoResourceGroup
+        package: build.zip
+        startup-command: 'pm2 serve /home/site/wwwroot --no-daemon'
