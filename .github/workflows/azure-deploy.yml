@@ -3,7 +3,7 @@ name: Build and Deploy React app to Azure Web App
 on:
   push:
     branches:
-      - feat/kurokomes  # デプロイをトリガーするブランチを指定
+      - feat/fukaor  # デプロイをトリガーするブランチを指定
 
 jobs:
   build-and-deploy:
@@ -41,7 +41,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ekkyowebapp-github-actions-linux
+        app-name: ekkyowebapp-github-actions-fukaor
         resource-group: ekkyoResourceGroup
         package: react-ekkyo-app/build.zip
         startup-command: 'serve -s build'
