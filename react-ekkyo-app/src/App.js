@@ -17,16 +17,22 @@ import SkillForm from "./SkillForm";
 import TeachForm from "./TeachForm";
 import ChatForm from "./ChatForm";
 import Header from "./Header";
+import Login from "./Login";
 import "./App.css";
 
 function App() {
   const [data, setData] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // public ディレクトリから data.json を読み込む
+    // data.json からデータを読み込む
     fetch("/data.json")
       .then((response) => response.json())
-      .then((data) => setData(data))
+      .then((jsonData) => {
+        const savedData = JSON.parse(localStorage.getItem("tableData")) || [];
+        const combinedData = [...jsonData, ...savedData];
+        setData(combinedData);
+      })
       .catch((error) => console.error("Error loading data:", error));
   }, []);
 
@@ -34,8 +40,16 @@ function App() {
     const newId = data.length + 1;
     const updatedData = [...data, { id: newId, ...newData }];
     setData(updatedData);
-    localStorage.setItem("tableData", JSON.stringify(updatedData));
+    localStorage.setItem("tableData", JSON.stringify(updatedData.slice(4))); // 最初の4件は data.json のデータ
   };
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  if (!isLoggedIn) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   return (
     <Router>
@@ -143,7 +157,7 @@ function Home({ data }) {
                       to="/chat-form"
                       style={{ marginTop: "8px" }}
                     >
-                      参加
+                      参加したい
                     </Button>
                   </Box>
                 </TableCell>
