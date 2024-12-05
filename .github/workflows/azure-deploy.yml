@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      APP_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}
+      APP_NAME: ekkyo-gch-${{ github.event.ref_name }}
       RESOURCE_GROUP: ekkyoResourceGroup
       LOCATION: westus
       NODE_VERSION: '16'
@@ -28,6 +28,10 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ env.NODE_VERSION }}
+
+    - name: Sanitize branch name for app name
+      id: sanitize
+      run: echo "::set-output name=sanitized_name::$(echo ${{ github.ref_name }} | tr '/' '-' | tr '_' '-')"
 
     - name: Install dependencies
       run: |
@@ -51,14 +55,14 @@ jobs:
 
     - name: Create Azure Web App if it does not exist
       run: |
-        if ! az webapp show --name ${{ env.APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }}; then
-          az webapp create --resource-group ${{ env.RESOURCE_GROUP }} --plan ${{ env.APP_SERVICE_PLAN }} --name ${{ env.APP_NAME }} --runtime "NODE|16-lts"
+        if ! az webapp show --name ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }} --resource-group ${{ env.RESOURCE_GROUP }}; then
+          az webapp create --resource-group ${{ env.RESOURCE_GROUP }} --plan ${{ env.APP_SERVICE_PLAN }} --name ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }} --runtime "NODE|16-lts"
         fi
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ env.APP_NAME }}
+        app-name: ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }}
         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
         package: react-ekkyo-app/build.zip
         startup-command: 'pm2 serve /home/site/wwwroot --no-daemon'
