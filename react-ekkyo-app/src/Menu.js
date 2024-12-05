@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Drawer,
   List,
@@ -6,41 +7,20 @@ import {
   ListItemIcon,
   ListItemText,
   Box,
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import AddIcon from "@mui/icons-material/Add";
-import PeopleIcon from "@mui/icons-material/People";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import MessageIcon from "@mui/icons-material/Message";
-import SettingsIcon from "@mui/icons-material/Settings";
-import ContactMailIcon from "@mui/icons-material/ContactMail";
-import "./Header.css";
+import {
+  Dashboard as DashboardIcon,
+  Add as AddIcon,
+  People as PeopleIcon,
+  Assignment as AssignmentIcon,
+  Message as MessageIcon,
+  Settings as SettingsIcon,
+  ContactMail as ContactMailIcon,
+} from "@mui/icons-material";
 
-function Header({ drawerOpen, toggleDrawer }) {
+const Menu = ({ drawerOpen, toggleDrawer }) => {
   return (
-    <Drawer variant="permanent" open={drawerOpen} className="drawer">
-      <AppBar position="static" className="header">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={toggleDrawer}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className="title">
-            スキトラ
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-        </Toolbar>
-      </AppBar>
+    <Drawer variant="permanent" open={drawerOpen}>
       <List>
         <ListItem button component={Link} to="/">
           <ListItemIcon>
@@ -90,6 +70,6 @@ function Header({ drawerOpen, toggleDrawer }) {
       </List>
     </Drawer>
   );
-}
+};
 
-export default Header;
+export default Menu;
