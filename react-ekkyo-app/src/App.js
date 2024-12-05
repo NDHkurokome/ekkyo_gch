@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+import React from 'react';
+import './App.css';
+=======
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import {
@@ -18,6 +22,7 @@ import TeachForm from "./TeachForm";
 import ChatForm from "./ChatForm";
 import Header from "./Header";
 import "./App.css";
+>>>>>>> origin/main
 
 function App() {
   const [data, setData] = useState([]);
@@ -38,6 +43,13 @@ function App() {
   };
 
   return (
+<<<<<<< HEAD
+    <div className="App">
+      <header className="App-header">
+        <h1>Hello World</h1>
+      </header>
+    </div>
+=======
     <Router>
       <Header />
       <Container className="root">
@@ -153,6 +165,7 @@ function Home({ data }) {
         </Table>
       </TableContainer>
     </>
+>>>>>>> origin/main
   );
 }
 
