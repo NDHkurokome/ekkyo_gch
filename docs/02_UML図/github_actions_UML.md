@@ -1,3 +1,4 @@
+```plantuml
 @startuml
 actor Developer
 
@@ -45,3 +46,4 @@ group Deploy to Azure Web App
 end
 
 @enduml
+```
