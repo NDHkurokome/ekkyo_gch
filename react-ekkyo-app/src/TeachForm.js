@@ -1,7 +1,14 @@
 import React from "react";
-import { Container, TextField, Button, Typography, Box } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Paper,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import "./App.css";
+import "./FormStyles.css"; // 共通のCSSファイルをインポート
 
 function TeachForm() {
   const navigate = useNavigate();
@@ -13,38 +20,32 @@ function TeachForm() {
   };
 
   return (
-    <Container className="root">
-      <Typography variant="h4" className="header">
-        社内スキルマッチング
-      </Typography>
-      <Typography variant="h6" className="subheader">
-        スキトラ 登録フォーム
-      </Typography>
-      <Box mb={4}>
-        <TextField
-          label="どのようなことを応募者に伝えますか。"
-          variant="outlined"
-          fullWidth
-          multiline
-          rows={4}
-          className="textField"
-        />
-      </Box>
-      <Box mb={4}>
-        <TextField
-          label="開催の希望日を記載ください"
-          variant="outlined"
-          fullWidth
-          type="date"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          className="textField"
-        />
-      </Box>
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
-        登録
-      </Button>
+    <Container maxWidth="sm">
+      <Paper className="form-container" elevation={3}>
+        <Typography variant="h5" className="form-title">
+          対応可否
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Box mb={2}>
+            <TextField
+              label="応募者に通知する内容を入力してください"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+              className="form-field"
+            />
+          </Box>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className="form-button"
+          >
+            送信
+          </Button>
+        </form>
+      </Paper>
     </Container>
   );
 }
