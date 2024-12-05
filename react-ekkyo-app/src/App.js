@@ -86,17 +86,7 @@ function Home({ data }) {
 
   return (
     <>
-      <Box mb={4} display="flex" justifyContent="center">
-        <Button
-          variant="contained"
-          color="primary"
-          className="button"
-          component={Link}
-          to="/skill-form"
-        >
-          スキル募集フォーム
-        </Button>
-      </Box>
+      <Box mb={4} display="flex" justifyContent="center"></Box>
       <Box mb={4} display="flex" justifyContent="center" alignItems="center">
         <TextField
           label="検索"
