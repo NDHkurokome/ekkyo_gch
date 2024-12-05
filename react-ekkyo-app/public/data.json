@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "summary": "フロントエンド開発",
+        "skills": "React, JavaScript",
+        "availability": "締切",
+        "comments": "業務経験ありの方",
+        "guest": "2人"
+    },
+    {
+        "id": 2,
+        "summary": "バックエンド開発",
+        "skills": "Node.js, Express",
+        "availability": "教える",
+        "comments": "Node.jsの経験がある方",
+        "guest": "0人"
+    },
+    {
+        "id": 3,
+        "summary": "データベース管理",
+        "skills": "MySQL, MongoDB",
+        "availability": "締切",
+        "comments": "DBの設計経験がある方",
+        "guest": "15人"
+    },
+    {
+        "id": 4,
+        "summary": "モバイルアプリ開発",
+        "skills": "React Native, Swift",
+        "availability": "締切",
+        "comments": "経験あり",
+        "guest": "可能"
+    }
+]

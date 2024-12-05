@@ -17,16 +17,24 @@ import SkillForm from "./SkillForm";
 import TeachForm from "./TeachForm";
 import ChatForm from "./ChatForm";
 import Header from "./Header";
-import tableData from "./data";
 import "./App.css";
 
 function App() {
-  const [data, setData] = useState(tableData);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // public ディレクトリから data.json を読み込む
+    fetch("/data.json")
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error("Error loading data:", error));
+  }, []);
 
   const addData = (newData) => {
     const newId = data.length + 1;
     const updatedData = [...data, { id: newId, ...newData }];
     setData(updatedData);
+    localStorage.setItem("tableData", JSON.stringify(updatedData));
   };
 
   return (
