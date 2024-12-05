@@ -6,6 +6,7 @@ on:
       - feat/kurokomes
       - feat/ono
       - feat/sakaguchi
+      - feat/buildtest
       - develop
       - main  # 本番環境用のブランチ
 
