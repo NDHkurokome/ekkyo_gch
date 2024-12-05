@@ -8,8 +8,10 @@ import {
   List,
   ListItem,
   ListItemText,
+  Paper,
 } from "@mui/material";
 import "./App.css";
+import "./FormStyles.css"; // 共通のCSSファイルをインポート
 
 function ChatForm() {
   const [posts, setPosts] = useState([]);
@@ -27,42 +29,53 @@ function ChatForm() {
   };
 
   return (
-    <Container className="root">
-      <Typography variant="h4" className="header">
-        社内スキルマッチングスキトラチャットフォーム
-      </Typography>
-      <Typography variant="h6" className="subheader">
-        マッチングした同士で事前に細かい要望や調整がありましたら、こちらのフォームで確認してください。
-      </Typography>
-      {selectedPost && (
+    <Container maxWidth="sm">
+      <Paper className="form-container" elevation={3}>
+        <Typography variant="h5" className="form-title">
+          ゲスト参加
+        </Typography>
+        <Typography variant="h6" className="subheader">
+          共有事項を投稿してください。
+        </Typography>
+        {selectedPost && (
+          <Box mb={4}>
+            <Typography variant="body1" className="selectedPost">
+              {selectedPost}
+            </Typography>
+          </Box>
+        )}
         <Box mb={4}>
-          <Typography variant="body1" className="selectedPost">
-            {selectedPost}
-          </Typography>
+          <TextField
+            label="投稿内容"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={4}
+            value={newPost}
+            onChange={(e) => setNewPost(e.target.value)}
+            className="form-field"
+          />
         </Box>
-      )}
-      <Box mb={4}>
-        <TextField
-          label="投稿内容"
-          variant="outlined"
-          fullWidth
-          multiline
-          rows={4}
-          value={newPost}
-          onChange={(e) => setNewPost(e.target.value)}
-          className="textField"
-        />
-      </Box>
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
-        投稿
-      </Button>
-      <List>
-        {posts.map((post, index) => (
-          <ListItem button key={index} onClick={() => handlePostClick(post)}>
-            <ListItemText primary={post} />
-          </ListItem>
-        ))}
-      </List>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+          className="form-button"
+        >
+          送信
+        </Button>
+        <List className="comment-list">
+          {posts.map((post, index) => (
+            <ListItem
+              key={index}
+              onClick={() => handlePostClick(post)}
+              className="comment"
+            >
+              <ListItemText primary={post} />
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
     </Container>
   );
 }

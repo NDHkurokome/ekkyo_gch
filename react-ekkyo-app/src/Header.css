@@ -1,20 +1,12 @@
-.drawer {
-  width: 240px;
-  flex-shrink: 0;
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
+/* center クラスのスタイルを定義 */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* ビューポートの高さを設定 */
+  margin-left: 600px; /* .drawer の幅を考慮してさらに右に移動 */
 }
 
-.drawer .MuiDrawer-paper {
-  width: 240px;
-  box-sizing: border-box;
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-}
 
 /* main コンテンツの左マージンを設定 */
 .main {
@@ -32,14 +24,7 @@
   margin-top: 64px;
 }
 
-/* tableContainer のスタイルを調整 */
-.tableContainer {
-  margin-top: 32px;
-  border-radius: 8px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: calc(100% - 240px); /* .drawer の幅を引いた最大幅を設定 */
-}
+
 
 @media (max-width: 500px) {
   .root {
