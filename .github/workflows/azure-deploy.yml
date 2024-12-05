@@ -3,7 +3,7 @@ name: Build and Deploy HTML to Azure Web App
 on:
   push:
     branches:
-      - feat/fukaor  # デプロイをトリガーするブランチを指定
+      - feat/react  # デプロイをトリガーするブランチを指定
 
 jobs:
   build-and-deploy:
