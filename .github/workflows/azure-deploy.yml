@@ -48,6 +48,12 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Create Azure App Service plan if it does not exist
+      run: |
+        if ! az appservice plan show --name myAppServicePlan --resource-group ${{ env.RESOURCE_GROUP }}; then
+          az appservice plan create --name myAppServicePlan --resource-group ${{ env.RESOURCE_GROUP }} --sku B1 --is-linux
+        fi
+
     - name: Create Azure Web App if it does not exist
       run: |
         if ! az webapp show --name ${{ env.APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }}; then
