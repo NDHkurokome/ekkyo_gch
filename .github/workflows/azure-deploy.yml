@@ -32,3 +32,4 @@ jobs:
         app-name: ekkyowebapp-github-actions-linux
         resource-group: ekkyoResourceGroup
         package: build.zip
+        startup-command: 'pm2 serve /home/site/wwwroot --no-daemon'
