@@ -7,13 +7,22 @@
 `Build and Deploy HTML to Azure Web App`
 
 ## トリガー
-このワークフローは、`feat/react` ブランチへのプッシュイベントによってトリガーされます。
+このワークフローは、以下のブランチへのプッシュイベントによってトリガーされます。
+- `feat/kurokomes`
+- `feat/ono`
+- `feat/sakaguchi`
+- `develop`
+- `main`  # 本番環境用のブランチ
 
 ```yaml
 on:
   push:
     branches:
-      - feat/react  # デプロイをトリガーするブランチを指定
+      - feat/kurokomes
+      - feat/ono
+      - feat/sakaguchi
+      - develop
+      - main  # 本番環境用のブランチ
 ```
 
 ## ジョブ
@@ -22,6 +31,13 @@ on:
 
 ### 実行環境
 `ubuntu-latest`
+
+### 環境変数
+- `APP_NAME`: `ekkyo-gch-${{ github.event.ref_name }}`
+- `RESOURCE_GROUP`: `ekkyoResourceGroup`
+- `LOCATION`: `westus`
+- `NODE_VERSION`: `'16'`
+- `APP_SERVICE_PLAN`: `ekkyowebAppServicePlanLinux`  # 固定のApp Serviceプラン
 
 ### ステップ
 1. **コードのチェックアウト**
@@ -45,7 +61,16 @@ on:
         node-version: '16'
     ```
 
-3. **依存関係のインストール**
+3. **ブランチ名のサニタイズ**
+    - 説明: ブランチ名をアプリケーション名に使用できる形式に変換します。
+
+    ```yaml
+    - name: Sanitize branch name for app name
+      id: sanitize
+      run: echo "::set-output name=sanitized_name::$(echo ${{ github.ref_name }} | tr '/' '-' | tr '_' '-')"
+    ```
+
+4. **依存関係のインストール**
     - コマンド: `npm install`
     - 説明: `react-ekkyo-app` ディレクトリに移動し、依存関係をインストールします。
 
@@ -56,7 +81,7 @@ on:
         npm install
     ```
 
-4. **アプリケーションのビルド**
+5. **アプリケーションのビルド**
     - コマンド: `npm run build`
     - 説明: `react-ekkyo-app` ディレクトリに移動し、アプリケーションをビルドします。
 
@@ -67,7 +92,7 @@ on:
         npm run build
     ```
 
-5. **ビルドディレクトリの圧縮**
+6. **ビルドディレクトリの圧縮**
     - コマンド: `zip -r ../build.zip .`
     - 説明: `react-ekkyo-app/build` ディレクトリに移動し、ビルドディレクトリを ZIP ファイルに圧縮します。
 
@@ -78,7 +103,7 @@ on:
         zip -r ../build.zip .
     ```
 
-6. **Azure へのログイン**
+7. **Azure へのログイン**
     - アクション: `azure/login@v1`
     - 認証情報: `${{ secrets.AZURE_CREDENTIALS }}`
     - 説明: Azure にログインします。
@@ -90,10 +115,21 @@ on:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     ```
 
-7. **Azure Web App へのデプロイ**
+8. **Azure Web App の作成**
+    - 説明: Azure Web App が存在しない場合は作成します。
+
+    ```yaml
+    - name: Create Azure Web App if it does not exist
+      run: |
+        if ! az webapp show --name ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }} --resource-group ${{ env.RESOURCE_GROUP }}; then
+          az webapp create --resource-group ${{ env.RESOURCE_GROUP }} --plan ${{ env.APP_SERVICE_PLAN }} --name ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }} --runtime "NODE|16-lts"
+        fi
+    ```
+
+9. **Azure Web App へのデプロイ**
     - アクション: `azure/webapps-deploy@v2`
-    - アプリケーション名: `ekkyowebapp-github-actions-linux`
-    - リソースグループ: `ekkyoResourceGroup`
+    - アプリケーション名: `ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }}`
+    - パブリッシュプロファイル: `${{ secrets.AZURE_PUBLISH_PROFILE }}`
     - パッケージ: `react-ekkyo-app/build.zip`
     - スタートアップコマンド: `pm2 serve /home/site/wwwroot --no-daemon`
     - 説明: ビルドされたアプリケーションを Azure Web App にデプロイします。
@@ -102,11 +138,11 @@ on:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ekkyowebapp-github-actions-linux
-        resource-group: ekkyoResourceGroup
+        app-name: ekkyo-gch-${{ steps.sanitize.outputs.sanitized_name }}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
         package: react-ekkyo-app/build.zip
         startup-command: 'pm2 serve /home/site/wwwroot --no-daemon'
     ```
 
 ## まとめ
-このワークフローにより、`feat/react` ブランチにプッシュされた変更が自動的にビルドされ、Azure Web App にデプロイされます。各ステップは、依存関係のインストール、アプリケーションのビルド、ビルドディレクトリの圧縮、Azure へのログイン、およびデプロイを順に実行します。
+このワークフローにより、指定されたブランチにプッシュされた変更が自動的にビルドされ、Azure Web App にデプロイされます。各ステップは、依存関係のインストール、アプリケーションのビルド、ビルドディレクトリの圧縮、Azure へのログイン、Azure Web App の作成、およびデプロイを順に実行します。
