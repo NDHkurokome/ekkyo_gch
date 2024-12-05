@@ -18,6 +18,7 @@ jobs:
       RESOURCE_GROUP: ekkyoResourceGroup
       LOCATION: westus
       NODE_VERSION: '16'
+      APP_SERVICE_PLAN: ekkyowebAppServicePlanLinux  # 固定のApp Serviceプラン
 
     steps:
     - name: Checkout code
@@ -48,16 +49,10 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Create Azure App Service plan if it does not exist
-      run: |
-        if ! az appservice plan show --name myAppServicePlan --resource-group ${{ env.RESOURCE_GROUP }}; then
-          az appservice plan create --name myAppServicePlan --resource-group ${{ env.RESOURCE_GROUP }} --sku B1 --is-linux
-        fi
-
     - name: Create Azure Web App if it does not exist
       run: |
         if ! az webapp show --name ${{ env.APP_NAME }} --resource-group ${{ env.RESOURCE_GROUP }}; then
-          az webapp create --resource-group ${{ env.RESOURCE_GROUP }} --plan myAppServicePlan --name ${{ env.APP_NAME }} --runtime "NODE|16-lts"
+          az webapp create --resource-group ${{ env.RESOURCE_GROUP }} --plan ${{ env.APP_SERVICE_PLAN }} --name ${{ env.APP_NAME }} --runtime "NODE|16-lts"
         fi
 
     - name: Deploy to Azure Web App
