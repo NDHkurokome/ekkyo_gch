@@ -17,6 +17,7 @@ body {
 .header {
   margin-bottom: 32px;
   color: #333333;
+  height: 64px;
 }
 
 .subheader {
@@ -38,18 +39,39 @@ body {
 .tableContainer {
   margin-top: 32px;
   border-radius: 8px;
-  overflow: hidden;
 }
 
-.table {
-  min-width: 650px;
+/* Header の幅を設定 */
+.drawer {
+  width: 240px;
+  flex-shrink: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
 }
 
-.table th, .table td {
+.drawer .MuiDrawer-paper {
+  width: 240px;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+
+/* main コンテンツの左マージンを設定 */
+.main {
+  margin-left: 240px;
   padding: 16px;
 }
 
-@media (max-width: 600px) {
+/* main コンテンツの上マージンを設定 */
+.main {
+  margin-top: 64px;
+}
+
+@media (max-width: 800px) {
   .root {
     padding: 16px;
   }
