@@ -10,22 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # リポジトリのクローン
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # リポジトリのクローン
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Azureへのログイン
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # Azureへのログイン
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # Webアプリを作成
-    - name: Create Web App
-      run: |
-        az webapp create --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --plan ekkyowebAppServicePlanLinux --runtime "NODE:16-lts"
+      # Webアプリを作成
+      - name: Create Web App
+        run: |
+          az webapp create --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --plan ekkyowebAppServicePlanLinux --runtime "NODE:16-lts"
 
-    # Webアプリへのデプロイ
-    - name: Deploy to Azure Web App
-      run: |
-        az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
+      # Webアプリへのデプロイ
+      - name: Deploy to Azure Web App
+        run: |
+          az webapp up --name ekkyowebapp-github-actions-linux --resource-group ekkyoResourceGroup --location westus --runtime "NODE:16-lts"
