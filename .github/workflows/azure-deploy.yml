@@ -44,3 +44,4 @@ jobs:
         app-name: ekkyowebapp-github-actions-linux
         resource-group: ekkyoResourceGroup
         package: react-ekkyo-app/build.zip
+        startup-command: 'serve -s build'
