@@ -1,4 +1,4 @@
-name: Build and Deploy React app to Azure Web App
+name: Build and Deploy HTML to Azure Web App
 
 on:
   push:
@@ -13,25 +13,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-
-    - name: Install dependencies
+    - name: Create Hello World HTML
       run: |
-        cd react-ekkyo-app
-        npm install
+        echo "<!DOCTYPE html><html><head><title>Hello</title></head><body><h1>Hello, world</h1></body></html>" > index.html
 
-    - name: Build the app
+    - name: Zip the HTML file
       run: |
-        cd react-ekkyo-app
-        npm run build
-
-    - name: Zip the build directory
-      run: |
-        cd react-ekkyo-app/build
-        zip -r ../build.zip .
+        zip build.zip index.html
 
     - name: Login to Azure
       uses: azure/login@v1
@@ -43,5 +31,4 @@ jobs:
       with:
         app-name: ekkyowebapp-github-actions-linux
         resource-group: ekkyoResourceGroup
-        package: react-ekkyo-app/build.zip
-        #startup-command: 'serve -s build -l 3000'
+        package: build.zip
