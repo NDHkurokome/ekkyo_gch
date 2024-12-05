@@ -3,10 +3,10 @@ name: Build and Deploy HTML to Azure Web App
 on:
   push:
     branches:
-      - feat/react  # デプロイをトリガーするブランチを指定
       - feat/kurokomes
       - feat/ono
-      - feat/fukaos 
+      - feat/sakaguchi
+      - develop
       - main  # 本番環境用のブランチ
 
 jobs:
